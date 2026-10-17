@@ -53,16 +53,33 @@ modelo chico** vía vLLM.
 
 ---
 
-## Scripts
+## Scripts y atajos
 
-Para correr **en el server del trabajo**, en este orden:
+**Todo se maneja con `make`.** Corré `make` solo para ver la lista completa:
 
-| Script | Qué hace |
+```bash
+make preflight    # diagnóstico: particiones, NVLink, throttling, RAM, NVMe
+make install-vllm
+make install-llamacpp
+make start        # levanta los 2 servicios en background
+make status       # GPU + puertos + procesos
+make report       # mide ambos y guarda logs/report-<fecha>.md
+make stop
+```
+
+Config sobreescribible: `make start GPU_A=2 GPU_B=3 CTX=16384 QUANT=IQ3_XXS`
+
+### Qué hay por debajo
+
+| Archivo | Qué hace |
 |---|---|
-| `scripts/00-preflight.sh` | Chequeo de realidad: particiones libres, NVLink, throttling, RAM y canales, NVMe, runtimes. **Sin sudo no obtiene los canales de RAM.** |
-| `scripts/10-serve-agentic-gptoss.sh` | Levanta el **Cliente A** (`gpt-oss-20b`, tool calling) en una partición |
+| `Makefile` | Los atajos de arriba. **Empezá por acá** |
+| `scripts/00-preflight.sh` | Chequeo de realidad: particiones libres, NVLink, throttling, RAM y canales, NVMe, runtimes |
+| `scripts/10-serve-agentic-gptoss.sh` | Levanta el **Cliente A** (`gpt-oss-20b`, tool calling) |
 | `scripts/20-serve-coding-ornith.sh` | Levanta el **Cliente B** (`Ornith-1.5-35B-A3B`, coding) vía llama.cpp |
 | `scripts/30-smoke-tool-calling.py` | Prueba de punta a punta: ¿emite `tool_calls` válidas?, ¿cierra el ciclo?, **TTFT, decode t/s y prefill t/s** |
+
+Los scripts se pueden usar solos, sin `make`:
 
 ```bash
 bash scripts/00-preflight.sh

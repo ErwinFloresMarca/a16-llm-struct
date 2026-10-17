@@ -12,6 +12,9 @@ venv/
 *.safetensors
 models/
 
+# Salidas de make start / make report
+logs/
+
 # Sistema
 .DS_Store
 *.swp
