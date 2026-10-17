@@ -1,0 +1,17 @@
+# Memoria local de Engram (no es parte del análisis)
+.engram/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Modelos descargados (nunca al repo)
+*.gguf
+*.safetensors
+models/
+
+# Sistema
+.DS_Store
+*.swp
